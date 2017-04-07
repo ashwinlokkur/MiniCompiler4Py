@@ -2,19 +2,20 @@ import ply.lex as lex
 import re
 #import ply.yacc as yacc
 
-tokens = ['NAME','VAR','NUMBER','ID','PLUS','MINUS','MULTIPLY','DIVIDE','COMMA','PARANOPEN','PARANCLOSE','FLOWEROPEN','FLOWERCLOSE','EQUAL','GREATER','LESSER','GREATEREQ','LESSEREQ','EQEQ','NOTEQ','AND','OR']
-reserved = {'if':'IF','for':'FOR','range':'RANGE','print':'PRINT'}
+tokens = ['NAME','VAR','NUMBER','ID','PLUS','MINUS','MULTIPLY','DIVIDE','COMMA','COLON','PARANOPEN','PARANCLOSE','FLOWEROPEN','FLOWERCLOSE','EQUAL','GREATER','LESSER','GREATEREQ','LESSEREQ','EQEQ','NOTEQ','AND','OR']
+reserved = {'if':'IF','in':'IN','for':'FOR','range':'RANGE','xrange':'XRANGE','print':'PRINT'}
 
 tokens = tokens + list(reserved.values())
 
 t_ignore=' '
-t_ignore_COMMENT=r'[#].*'
+t_ignore_COMMENT=r'[#].* | \'\'\'.*\'\'\''
 t_PLUS=r'\+'
 t_MINUS=r'\-'
 t_MULTIPLY=r'\*'
 t_DIVIDE=r'/'
 t_EQUAL=r'='
 t_COMMA=r','
+t_COLON=r':'
 t_PARANOPEN=r'\('
 t_PARANCLOSE=r'\)'
 t_FLOWEROPEN=r'{'
@@ -51,6 +52,7 @@ def t_COMMENT(t):
 '''
 lexer = lex.lex()
 
+'''
 f = open('inputFile.py')
 data = f.read()
 
@@ -60,4 +62,4 @@ while True:
     tok = lexer.token()
     if not tok:
         break
-    print(tok)
+    print(tok) '''

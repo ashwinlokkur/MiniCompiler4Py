@@ -1,4 +1,5 @@
-n=5
+n = 5
+'''asdasdasd'''
 #comm     qsdasd
   #co mm 2
     #c omm 3

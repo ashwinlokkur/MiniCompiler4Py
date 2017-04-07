@@ -1,0 +1,624 @@
+Created by PLY version 3.10 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    EQEQ
+    FLOWERCLOSE
+    IF
+    GREATEREQ
+    FLOWEROPEN
+    NOTEQ
+    ID
+    GREATER
+    AND
+    NAME
+    LESSEREQ
+    LESSER
+    OR
+
+Grammar
+
+Rule 0     S' -> start
+Rule 1     start -> assign start
+Rule 2     start -> fLoop start
+Rule 3     start -> assign
+Rule 4     start -> fLoop stmt
+Rule 5     stmt -> PRINT VAR
+Rule 6     assign -> VAR EQUAL expr
+Rule 7     expr -> expr PLUS term
+Rule 8     expr -> expr MINUS term
+Rule 9     expr -> term
+Rule 10    term -> term MULTIPLY factor
+Rule 11    term -> term DIVIDE factor
+Rule 12    term -> factor
+Rule 13    factor -> VAR
+Rule 14    factor -> NUMBER
+Rule 15    fLoop -> FOR inner
+Rule 16    inner -> PARANOPEN VAR IN rangeSpec PARANCLOSE COLON
+Rule 17    inner -> VAR IN rangeSpec COLON
+Rule 18    rangeSpec -> RANGE PARANOPEN expr COMMA expr PARANCLOSE
+Rule 19    rangeSpec -> XRANGE PARANOPEN expr PARANCLOSE
+
+Terminals, with rules where they appear
+
+AND                  : 
+COLON                : 16 17
+COMMA                : 18
+DIVIDE               : 11
+EQEQ                 : 
+EQUAL                : 6
+FLOWERCLOSE          : 
+FLOWEROPEN           : 
+FOR                  : 15
+GREATER              : 
+GREATEREQ            : 
+ID                   : 
+IF                   : 
+IN                   : 16 17
+LESSER               : 
+LESSEREQ             : 
+MINUS                : 8
+MULTIPLY             : 10
+NAME                 : 
+NOTEQ                : 
+NUMBER               : 14
+OR                   : 
+PARANCLOSE           : 16 18 19
+PARANOPEN            : 16 18 19
+PLUS                 : 7
+PRINT                : 5
+RANGE                : 18
+VAR                  : 5 6 13 16 17
+XRANGE               : 19
+error                : 
+
+Nonterminals, with rules where they appear
+
+assign               : 1 3
+expr                 : 6 7 8 18 18 19
+fLoop                : 2 4
+factor               : 10 11 12
+inner                : 15
+rangeSpec            : 16 17
+start                : 1 2 0
+stmt                 : 4
+term                 : 7 8 9 10 11
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . start
+    (1) start -> . assign start
+    (2) start -> . fLoop start
+    (3) start -> . assign
+    (4) start -> . fLoop stmt
+    (6) assign -> . VAR EQUAL expr
+    (15) fLoop -> . FOR inner
+
+    VAR             shift and go to state 4
+    FOR             shift and go to state 2
+
+    fLoop                          shift and go to state 1
+    start                          shift and go to state 3
+    assign                         shift and go to state 5
+
+state 1
+
+    (2) start -> fLoop . start
+    (4) start -> fLoop . stmt
+    (1) start -> . assign start
+    (2) start -> . fLoop start
+    (3) start -> . assign
+    (4) start -> . fLoop stmt
+    (5) stmt -> . PRINT VAR
+    (6) assign -> . VAR EQUAL expr
+    (15) fLoop -> . FOR inner
+
+    PRINT           shift and go to state 8
+    VAR             shift and go to state 4
+    FOR             shift and go to state 2
+
+    fLoop                          shift and go to state 1
+    stmt                           shift and go to state 6
+    start                          shift and go to state 7
+    assign                         shift and go to state 5
+
+state 2
+
+    (15) fLoop -> FOR . inner
+    (16) inner -> . PARANOPEN VAR IN rangeSpec PARANCLOSE COLON
+    (17) inner -> . VAR IN rangeSpec COLON
+
+    PARANOPEN       shift and go to state 9
+    VAR             shift and go to state 11
+
+    inner                          shift and go to state 10
+
+state 3
+
+    (0) S' -> start .
+
+
+
+state 4
+
+    (6) assign -> VAR . EQUAL expr
+
+    EQUAL           shift and go to state 12
+
+
+state 5
+
+    (1) start -> assign . start
+    (3) start -> assign .
+    (1) start -> . assign start
+    (2) start -> . fLoop start
+    (3) start -> . assign
+    (4) start -> . fLoop stmt
+    (6) assign -> . VAR EQUAL expr
+    (15) fLoop -> . FOR inner
+
+    $end            reduce using rule 3 (start -> assign .)
+    VAR             shift and go to state 4
+    FOR             shift and go to state 2
+
+    fLoop                          shift and go to state 1
+    start                          shift and go to state 13
+    assign                         shift and go to state 5
+
+state 6
+
+    (4) start -> fLoop stmt .
+
+    $end            reduce using rule 4 (start -> fLoop stmt .)
+
+
+state 7
+
+    (2) start -> fLoop start .
+
+    $end            reduce using rule 2 (start -> fLoop start .)
+
+
+state 8
+
+    (5) stmt -> PRINT . VAR
+
+    VAR             shift and go to state 14
+
+
+state 9
+
+    (16) inner -> PARANOPEN . VAR IN rangeSpec PARANCLOSE COLON
+
+    VAR             shift and go to state 15
+
+
+state 10
+
+    (15) fLoop -> FOR inner .
+
+    PRINT           reduce using rule 15 (fLoop -> FOR inner .)
+    VAR             reduce using rule 15 (fLoop -> FOR inner .)
+    FOR             reduce using rule 15 (fLoop -> FOR inner .)
+
+
+state 11
+
+    (17) inner -> VAR . IN rangeSpec COLON
+
+    IN              shift and go to state 16
+
+
+state 12
+
+    (6) assign -> VAR EQUAL . expr
+    (7) expr -> . expr PLUS term
+    (8) expr -> . expr MINUS term
+    (9) expr -> . term
+    (10) term -> . term MULTIPLY factor
+    (11) term -> . term DIVIDE factor
+    (12) term -> . factor
+    (13) factor -> . VAR
+    (14) factor -> . NUMBER
+
+    VAR             shift and go to state 21
+    NUMBER          shift and go to state 19
+
+    expr                           shift and go to state 18
+    term                           shift and go to state 17
+    factor                         shift and go to state 20
+
+state 13
+
+    (1) start -> assign start .
+
+    $end            reduce using rule 1 (start -> assign start .)
+
+
+state 14
+
+    (5) stmt -> PRINT VAR .
+
+    $end            reduce using rule 5 (stmt -> PRINT VAR .)
+
+
+state 15
+
+    (16) inner -> PARANOPEN VAR . IN rangeSpec PARANCLOSE COLON
+
+    IN              shift and go to state 22
+
+
+state 16
+
+    (17) inner -> VAR IN . rangeSpec COLON
+    (18) rangeSpec -> . RANGE PARANOPEN expr COMMA expr PARANCLOSE
+    (19) rangeSpec -> . XRANGE PARANOPEN expr PARANCLOSE
+
+    RANGE           shift and go to state 24
+    XRANGE          shift and go to state 23
+
+    rangeSpec                      shift and go to state 25
+
+state 17
+
+    (9) expr -> term .
+    (10) term -> term . MULTIPLY factor
+    (11) term -> term . DIVIDE factor
+
+    PARANCLOSE      reduce using rule 9 (expr -> term .)
+    PLUS            reduce using rule 9 (expr -> term .)
+    MINUS           reduce using rule 9 (expr -> term .)
+    COMMA           reduce using rule 9 (expr -> term .)
+    VAR             reduce using rule 9 (expr -> term .)
+    FOR             reduce using rule 9 (expr -> term .)
+    $end            reduce using rule 9 (expr -> term .)
+    MULTIPLY        shift and go to state 26
+    DIVIDE          shift and go to state 27
+
+
+state 18
+
+    (6) assign -> VAR EQUAL expr .
+    (7) expr -> expr . PLUS term
+    (8) expr -> expr . MINUS term
+
+    VAR             reduce using rule 6 (assign -> VAR EQUAL expr .)
+    FOR             reduce using rule 6 (assign -> VAR EQUAL expr .)
+    $end            reduce using rule 6 (assign -> VAR EQUAL expr .)
+    PLUS            shift and go to state 28
+    MINUS           shift and go to state 29
+
+
+state 19
+
+    (14) factor -> NUMBER .
+
+    MULTIPLY        reduce using rule 14 (factor -> NUMBER .)
+    DIVIDE          reduce using rule 14 (factor -> NUMBER .)
+    PLUS            reduce using rule 14 (factor -> NUMBER .)
+    MINUS           reduce using rule 14 (factor -> NUMBER .)
+    VAR             reduce using rule 14 (factor -> NUMBER .)
+    FOR             reduce using rule 14 (factor -> NUMBER .)
+    $end            reduce using rule 14 (factor -> NUMBER .)
+    PARANCLOSE      reduce using rule 14 (factor -> NUMBER .)
+    COMMA           reduce using rule 14 (factor -> NUMBER .)
+
+
+state 20
+
+    (12) term -> factor .
+
+    MULTIPLY        reduce using rule 12 (term -> factor .)
+    DIVIDE          reduce using rule 12 (term -> factor .)
+    PLUS            reduce using rule 12 (term -> factor .)
+    MINUS           reduce using rule 12 (term -> factor .)
+    VAR             reduce using rule 12 (term -> factor .)
+    FOR             reduce using rule 12 (term -> factor .)
+    $end            reduce using rule 12 (term -> factor .)
+    PARANCLOSE      reduce using rule 12 (term -> factor .)
+    COMMA           reduce using rule 12 (term -> factor .)
+
+
+state 21
+
+    (13) factor -> VAR .
+
+    MULTIPLY        reduce using rule 13 (factor -> VAR .)
+    DIVIDE          reduce using rule 13 (factor -> VAR .)
+    PLUS            reduce using rule 13 (factor -> VAR .)
+    MINUS           reduce using rule 13 (factor -> VAR .)
+    VAR             reduce using rule 13 (factor -> VAR .)
+    FOR             reduce using rule 13 (factor -> VAR .)
+    $end            reduce using rule 13 (factor -> VAR .)
+    PARANCLOSE      reduce using rule 13 (factor -> VAR .)
+    COMMA           reduce using rule 13 (factor -> VAR .)
+
+
+state 22
+
+    (16) inner -> PARANOPEN VAR IN . rangeSpec PARANCLOSE COLON
+    (18) rangeSpec -> . RANGE PARANOPEN expr COMMA expr PARANCLOSE
+    (19) rangeSpec -> . XRANGE PARANOPEN expr PARANCLOSE
+
+    RANGE           shift and go to state 24
+    XRANGE          shift and go to state 23
+
+    rangeSpec                      shift and go to state 30
+
+state 23
+
+    (19) rangeSpec -> XRANGE . PARANOPEN expr PARANCLOSE
+
+    PARANOPEN       shift and go to state 31
+
+
+state 24
+
+    (18) rangeSpec -> RANGE . PARANOPEN expr COMMA expr PARANCLOSE
+
+    PARANOPEN       shift and go to state 32
+
+
+state 25
+
+    (17) inner -> VAR IN rangeSpec . COLON
+
+    COLON           shift and go to state 33
+
+
+state 26
+
+    (10) term -> term MULTIPLY . factor
+    (13) factor -> . VAR
+    (14) factor -> . NUMBER
+
+    VAR             shift and go to state 21
+    NUMBER          shift and go to state 19
+
+    factor                         shift and go to state 34
+
+state 27
+
+    (11) term -> term DIVIDE . factor
+    (13) factor -> . VAR
+    (14) factor -> . NUMBER
+
+    VAR             shift and go to state 21
+    NUMBER          shift and go to state 19
+
+    factor                         shift and go to state 35
+
+state 28
+
+    (7) expr -> expr PLUS . term
+    (10) term -> . term MULTIPLY factor
+    (11) term -> . term DIVIDE factor
+    (12) term -> . factor
+    (13) factor -> . VAR
+    (14) factor -> . NUMBER
+
+    VAR             shift and go to state 21
+    NUMBER          shift and go to state 19
+
+    term                           shift and go to state 36
+    factor                         shift and go to state 20
+
+state 29
+
+    (8) expr -> expr MINUS . term
+    (10) term -> . term MULTIPLY factor
+    (11) term -> . term DIVIDE factor
+    (12) term -> . factor
+    (13) factor -> . VAR
+    (14) factor -> . NUMBER
+
+    VAR             shift and go to state 21
+    NUMBER          shift and go to state 19
+
+    term                           shift and go to state 37
+    factor                         shift and go to state 20
+
+state 30
+
+    (16) inner -> PARANOPEN VAR IN rangeSpec . PARANCLOSE COLON
+
+    PARANCLOSE      shift and go to state 38
+
+
+state 31
+
+    (19) rangeSpec -> XRANGE PARANOPEN . expr PARANCLOSE
+    (7) expr -> . expr PLUS term
+    (8) expr -> . expr MINUS term
+    (9) expr -> . term
+    (10) term -> . term MULTIPLY factor
+    (11) term -> . term DIVIDE factor
+    (12) term -> . factor
+    (13) factor -> . VAR
+    (14) factor -> . NUMBER
+
+    VAR             shift and go to state 21
+    NUMBER          shift and go to state 19
+
+    expr                           shift and go to state 39
+    term                           shift and go to state 17
+    factor                         shift and go to state 20
+
+state 32
+
+    (18) rangeSpec -> RANGE PARANOPEN . expr COMMA expr PARANCLOSE
+    (7) expr -> . expr PLUS term
+    (8) expr -> . expr MINUS term
+    (9) expr -> . term
+    (10) term -> . term MULTIPLY factor
+    (11) term -> . term DIVIDE factor
+    (12) term -> . factor
+    (13) factor -> . VAR
+    (14) factor -> . NUMBER
+
+    VAR             shift and go to state 21
+    NUMBER          shift and go to state 19
+
+    expr                           shift and go to state 40
+    term                           shift and go to state 17
+    factor                         shift and go to state 20
+
+state 33
+
+    (17) inner -> VAR IN rangeSpec COLON .
+
+    PRINT           reduce using rule 17 (inner -> VAR IN rangeSpec COLON .)
+    VAR             reduce using rule 17 (inner -> VAR IN rangeSpec COLON .)
+    FOR             reduce using rule 17 (inner -> VAR IN rangeSpec COLON .)
+
+
+state 34
+
+    (10) term -> term MULTIPLY factor .
+
+    MULTIPLY        reduce using rule 10 (term -> term MULTIPLY factor .)
+    DIVIDE          reduce using rule 10 (term -> term MULTIPLY factor .)
+    PLUS            reduce using rule 10 (term -> term MULTIPLY factor .)
+    MINUS           reduce using rule 10 (term -> term MULTIPLY factor .)
+    VAR             reduce using rule 10 (term -> term MULTIPLY factor .)
+    FOR             reduce using rule 10 (term -> term MULTIPLY factor .)
+    $end            reduce using rule 10 (term -> term MULTIPLY factor .)
+    PARANCLOSE      reduce using rule 10 (term -> term MULTIPLY factor .)
+    COMMA           reduce using rule 10 (term -> term MULTIPLY factor .)
+
+
+state 35
+
+    (11) term -> term DIVIDE factor .
+
+    MULTIPLY        reduce using rule 11 (term -> term DIVIDE factor .)
+    DIVIDE          reduce using rule 11 (term -> term DIVIDE factor .)
+    PLUS            reduce using rule 11 (term -> term DIVIDE factor .)
+    MINUS           reduce using rule 11 (term -> term DIVIDE factor .)
+    VAR             reduce using rule 11 (term -> term DIVIDE factor .)
+    FOR             reduce using rule 11 (term -> term DIVIDE factor .)
+    $end            reduce using rule 11 (term -> term DIVIDE factor .)
+    PARANCLOSE      reduce using rule 11 (term -> term DIVIDE factor .)
+    COMMA           reduce using rule 11 (term -> term DIVIDE factor .)
+
+
+state 36
+
+    (7) expr -> expr PLUS term .
+    (10) term -> term . MULTIPLY factor
+    (11) term -> term . DIVIDE factor
+
+    PARANCLOSE      reduce using rule 7 (expr -> expr PLUS term .)
+    PLUS            reduce using rule 7 (expr -> expr PLUS term .)
+    MINUS           reduce using rule 7 (expr -> expr PLUS term .)
+    COMMA           reduce using rule 7 (expr -> expr PLUS term .)
+    VAR             reduce using rule 7 (expr -> expr PLUS term .)
+    FOR             reduce using rule 7 (expr -> expr PLUS term .)
+    $end            reduce using rule 7 (expr -> expr PLUS term .)
+    MULTIPLY        shift and go to state 26
+    DIVIDE          shift and go to state 27
+
+
+state 37
+
+    (8) expr -> expr MINUS term .
+    (10) term -> term . MULTIPLY factor
+    (11) term -> term . DIVIDE factor
+
+    PARANCLOSE      reduce using rule 8 (expr -> expr MINUS term .)
+    PLUS            reduce using rule 8 (expr -> expr MINUS term .)
+    MINUS           reduce using rule 8 (expr -> expr MINUS term .)
+    COMMA           reduce using rule 8 (expr -> expr MINUS term .)
+    VAR             reduce using rule 8 (expr -> expr MINUS term .)
+    FOR             reduce using rule 8 (expr -> expr MINUS term .)
+    $end            reduce using rule 8 (expr -> expr MINUS term .)
+    MULTIPLY        shift and go to state 26
+    DIVIDE          shift and go to state 27
+
+
+state 38
+
+    (16) inner -> PARANOPEN VAR IN rangeSpec PARANCLOSE . COLON
+
+    COLON           shift and go to state 41
+
+
+state 39
+
+    (19) rangeSpec -> XRANGE PARANOPEN expr . PARANCLOSE
+    (7) expr -> expr . PLUS term
+    (8) expr -> expr . MINUS term
+
+    PARANCLOSE      shift and go to state 42
+    PLUS            shift and go to state 28
+    MINUS           shift and go to state 29
+
+
+state 40
+
+    (18) rangeSpec -> RANGE PARANOPEN expr . COMMA expr PARANCLOSE
+    (7) expr -> expr . PLUS term
+    (8) expr -> expr . MINUS term
+
+    COMMA           shift and go to state 43
+    PLUS            shift and go to state 28
+    MINUS           shift and go to state 29
+
+
+state 41
+
+    (16) inner -> PARANOPEN VAR IN rangeSpec PARANCLOSE COLON .
+
+    PRINT           reduce using rule 16 (inner -> PARANOPEN VAR IN rangeSpec PARANCLOSE COLON .)
+    VAR             reduce using rule 16 (inner -> PARANOPEN VAR IN rangeSpec PARANCLOSE COLON .)
+    FOR             reduce using rule 16 (inner -> PARANOPEN VAR IN rangeSpec PARANCLOSE COLON .)
+
+
+state 42
+
+    (19) rangeSpec -> XRANGE PARANOPEN expr PARANCLOSE .
+
+    COLON           reduce using rule 19 (rangeSpec -> XRANGE PARANOPEN expr PARANCLOSE .)
+    PARANCLOSE      reduce using rule 19 (rangeSpec -> XRANGE PARANOPEN expr PARANCLOSE .)
+
+
+state 43
+
+    (18) rangeSpec -> RANGE PARANOPEN expr COMMA . expr PARANCLOSE
+    (7) expr -> . expr PLUS term
+    (8) expr -> . expr MINUS term
+    (9) expr -> . term
+    (10) term -> . term MULTIPLY factor
+    (11) term -> . term DIVIDE factor
+    (12) term -> . factor
+    (13) factor -> . VAR
+    (14) factor -> . NUMBER
+
+    VAR             shift and go to state 21
+    NUMBER          shift and go to state 19
+
+    expr                           shift and go to state 44
+    term                           shift and go to state 17
+    factor                         shift and go to state 20
+
+state 44
+
+    (18) rangeSpec -> RANGE PARANOPEN expr COMMA expr . PARANCLOSE
+    (7) expr -> expr . PLUS term
+    (8) expr -> expr . MINUS term
+
+    PARANCLOSE      shift and go to state 45
+    PLUS            shift and go to state 28
+    MINUS           shift and go to state 29
+
+
+state 45
+
+    (18) rangeSpec -> RANGE PARANOPEN expr COMMA expr PARANCLOSE .
+
+    COLON           reduce using rule 18 (rangeSpec -> RANGE PARANOPEN expr COMMA expr PARANCLOSE .)
+    PARANCLOSE      reduce using rule 18 (rangeSpec -> RANGE PARANOPEN expr COMMA expr PARANCLOSE .)
+
