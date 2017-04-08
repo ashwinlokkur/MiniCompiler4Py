@@ -1,6 +1,5 @@
 import ply.yacc as yacc
 import plyLex
-import compiler
 
 tokens=plyLex.tokens
 
@@ -72,4 +71,3 @@ f = open('inputFile.py')
 data = f.read()
 
 res = yacc.parse(data)
-print res
