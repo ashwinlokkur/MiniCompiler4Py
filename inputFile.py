@@ -1,7 +1,10 @@
-n = 5
+n = 5-2/2
 '''asdasdasd'''
 #comm     qsdasd
   #co mm 2
     #c omm 3
-for i in range(0, n) :  #testComm 
-    print i   #  testComm 2
+for i in range(0 , n) :
+    for j in range(0 , n):  #testComm 
+        print i   #  testComm 2
+
+print "here"

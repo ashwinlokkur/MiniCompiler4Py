@@ -2,8 +2,8 @@ import ply.lex as lex
 import re
 #import ply.yacc as yacc
 
-tokens = ['NAME','VAR','NUMBER','ID','PLUS','MINUS','MULTIPLY','DIVIDE','COMMA','COLON','PARANOPEN','PARANCLOSE','FLOWEROPEN','FLOWERCLOSE','EQUAL','GREATER','LESSER','GREATEREQ','LESSEREQ','EQEQ','NOTEQ','AND','OR']
-reserved = {'if':'IF','in':'IN','for':'FOR','range':'RANGE','xrange':'XRANGE','print':'PRINT'}
+tokens = ['NAME','VAR','NUMBER','PLUS','MINUS','MULTIPLY','DIVIDE','COMMA','COLON','PARANOPEN','PARANCLOSE','FLOWEROPEN','FLOWERCLOSE','EQUAL','GREATER','LESSER','GREATEREQ','LESSEREQ','EQEQ','NOTEQ','AND','OR']
+reserved = {'if':'IF','in':'IN','for':'FOR','range':'RANGE','print':'PRINT'}
 
 tokens = tokens + list(reserved.values())
 
@@ -33,6 +33,10 @@ def t_error(t):
     #print "ERROR"
     t.lexer.skip(1)
 
+def t_newline(t):
+    r'\n+'
+    t.lexer.lineno = t.lexer.lineno + len(t.value)
+
 def t_NUMBER(t):
     r'\d+'
     t.value = int(t.value)
@@ -51,7 +55,6 @@ def t_COMMENT(t):
     t.lexer.skip(1)
 '''
 lexer = lex.lex()
-
 '''
 f = open('inputFile.py')
 data = f.read()
@@ -62,4 +65,5 @@ while True:
     tok = lexer.token()
     if not tok:
         break
-    print(tok) '''
+    print(tok)
+'''
