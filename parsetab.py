@@ -5,9 +5,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'NAME VAR NUMBER PLUS MINUS MULTIPLY DIVIDE COMMA COLON PARANOPEN PARANCLOSE FLOWEROPEN FLOWERCLOSE EQUAL GREATER LESSER GREATEREQ LESSEREQ EQEQ NOTEQ AND OR PRINT RANGE IN FOR IFstart : assign \n             | fLoop stmt \n             | assign start\n             | fLoop start\n             | stmt start\n             | stmtstmt : PRINT VARassign : factor EQUAL expr expr : expr PLUS term\n            | expr MINUS term\n            | term term : term MULTIPLY factor\n            | term DIVIDE factor\n            | factor factor : VAR\n              | NUMBER fLoop : FOR innerinner : PARANOPEN VAR IN rangeSpec PARANCLOSE COLON\n             | VAR IN rangeSpec COLON rangeSpec : RANGE PARANOPEN expr COMMA expr PARANCLOSE '
+_lr_signature = 'NAME VAR NUMBER PLUS MINUS MULTIPLY DIVIDE COMMA COLON PARANOPEN PARANCLOSE FLOWEROPEN FLOWERCLOSE EQUAL GREATER LESSER GREATEREQ LESSEREQ EQEQ NOTEQ AND OR PRINT RANGE IN FOR IFstart : assign \n             | fLoop stmt \n             | fLoop stmt start\n             | assign start\n             | assign fLoop start\n             | stmtstmt : PRINT VARassign : factor EQUAL expr expr : expr PLUS term\n            | expr MINUS term\n            | term term : term MULTIPLY factor\n            | term DIVIDE factor\n            | factor factor : VAR\n              | NUMBER fLoop : FOR innerinner : PARANOPEN VAR IN rangeSpec PARANCLOSE COLON\n             | VAR IN rangeSpec COLON rangeSpec : RANGE PARANOPEN expr COMMA expr PARANCLOSE '
     
-_lr_action_items = {'MULTIPLY':([4,8,21,23,34,35,36,37,],[-16,-15,27,-14,-12,-13,27,27,]),'DIVIDE':([4,8,21,23,34,35,36,37,],[-16,-15,28,-14,-12,-13,28,28,]),'FOR':([0,1,3,4,8,9,10,13,17,21,22,23,33,34,35,36,37,40,],[2,2,2,-16,-15,2,2,-17,-7,-11,-8,-14,-19,-12,-13,-9,-10,-18,]),'PARANOPEN':([2,25,],[12,32,]),'NUMBER':([0,1,3,4,8,9,10,13,16,17,21,22,23,27,28,29,30,32,33,34,35,36,37,40,41,],[4,4,4,-16,-15,4,4,-17,4,-7,-11,-8,-14,4,4,4,4,4,-19,-12,-13,-9,-10,-18,4,]),'EQUAL':([4,6,8,],[-16,16,-15,]),'VAR':([0,1,2,3,4,7,8,9,10,12,13,16,17,21,22,23,27,28,29,30,32,33,34,35,36,37,40,41,],[8,8,14,8,-16,17,-15,8,8,19,-17,8,-7,-11,-8,-14,8,8,8,8,8,-19,-12,-13,-9,-10,-18,8,]),'RANGE':([20,24,],[25,25,]),'COLON':([26,38,43,],[33,40,-20,]),'PLUS':([4,8,21,22,23,34,35,36,37,39,42,],[-16,-15,-11,29,-14,-12,-13,-9,-10,29,29,]),'IN':([14,19,],[20,24,]),'PRINT':([0,1,3,4,8,9,10,13,17,21,22,23,33,34,35,36,37,40,],[7,7,7,-16,-15,7,7,-17,-7,-11,-8,-14,-19,-12,-13,-9,-10,-18,]),'COMMA':([4,8,21,23,34,35,36,37,39,],[-16,-15,-11,-14,-12,-13,-9,-10,41,]),'MINUS':([4,8,21,22,23,34,35,36,37,39,42,],[-16,-15,-11,30,-14,-12,-13,-9,-10,30,30,]),'PARANCLOSE':([4,8,21,23,31,34,35,36,37,42,43,],[-16,-15,-11,-14,38,-12,-13,-9,-10,43,-20,]),'$end':([3,4,5,8,9,10,11,15,17,18,21,22,23,34,35,36,37,],[-6,-16,0,-15,-1,-2,-4,-5,-7,-3,-11,-8,-14,-12,-13,-9,-10,]),}
+_lr_action_items = {'MULTIPLY':([4,8,21,23,36,37,38,39,],[-16,-15,29,-14,-12,-13,29,29,]),'DIVIDE':([4,8,21,23,36,37,38,39,],[-16,-15,30,-14,-12,-13,30,30,]),'FOR':([0,4,8,9,10,12,15,16,21,22,23,24,35,36,37,38,39,42,],[2,-16,-15,2,2,-17,-7,2,-11,-8,-14,2,-19,-12,-13,-9,-10,-18,]),'PARANOPEN':([2,27,],[11,34,]),'NUMBER':([0,4,8,9,10,12,14,15,16,21,22,23,24,29,30,31,32,34,35,36,37,38,39,42,43,],[4,-16,-15,4,4,-17,4,-7,4,-11,-8,-14,4,4,4,4,4,4,-19,-12,-13,-9,-10,-18,4,]),'EQUAL':([4,6,8,],[-16,14,-15,]),'VAR':([0,2,4,7,8,9,10,11,12,14,15,16,21,22,23,24,29,30,31,32,34,35,36,37,38,39,42,43,],[8,13,-16,15,-15,8,8,19,-17,8,-7,8,-11,-8,-14,8,8,8,8,8,8,-19,-12,-13,-9,-10,-18,8,]),'RANGE':([20,26,],[27,27,]),'COLON':([28,40,45,],[35,42,-20,]),'PLUS':([4,8,21,22,23,36,37,38,39,41,44,],[-16,-15,-11,31,-14,-12,-13,-9,-10,31,31,]),'IN':([13,19,],[20,26,]),'PRINT':([0,1,4,8,9,10,12,15,16,21,22,23,24,35,36,37,38,39,42,],[7,7,-16,-15,7,7,-17,-7,7,-11,-8,-14,7,-19,-12,-13,-9,-10,-18,]),'COMMA':([4,8,21,23,36,37,38,39,41,],[-16,-15,-11,-14,-12,-13,-9,-10,43,]),'MINUS':([4,8,21,22,23,36,37,38,39,41,44,],[-16,-15,-11,32,-14,-12,-13,-9,-10,32,32,]),'PARANCLOSE':([4,8,21,23,33,36,37,38,39,44,45,],[-16,-15,-11,-14,40,-12,-13,-9,-10,45,-20,]),'$end':([3,4,5,8,9,10,15,17,18,21,22,23,24,25,36,37,38,39,],[-6,-16,0,-15,-1,-2,-7,-4,-3,-11,-8,-14,-2,-5,-12,-13,-9,-10,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -16,7 +16,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'term':([16,29,30,32,41,],[21,36,37,21,21,]),'fLoop':([0,1,3,9,10,],[1,1,1,1,1,]),'expr':([16,32,41,],[22,39,42,]),'stmt':([0,1,3,9,10,],[3,10,3,3,3,]),'start':([0,1,3,9,10,],[5,11,15,18,15,]),'rangeSpec':([20,24,],[26,31,]),'inner':([2,],[13,]),'factor':([0,1,3,9,10,16,27,28,29,30,32,41,],[6,6,6,6,6,23,34,35,23,23,23,23,]),'assign':([0,1,3,9,10,],[9,9,9,9,9,]),}
+_lr_goto_items = {'term':([14,31,32,34,43,],[21,38,39,21,21,]),'fLoop':([0,9,10,16,24,],[1,16,1,1,1,]),'expr':([14,34,43,],[22,41,44,]),'stmt':([0,1,9,10,16,24,],[3,10,3,3,24,3,]),'start':([0,9,10,16,24,],[5,17,18,25,18,]),'rangeSpec':([20,26,],[28,33,]),'inner':([2,],[12,]),'factor':([0,9,10,14,16,24,29,30,31,32,34,43,],[6,6,6,23,6,6,36,37,23,23,23,23,]),'assign':([0,9,10,16,24,],[9,9,9,9,9,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,24 +26,24 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> start","S'",1,None,None,None),
-  ('start -> assign','start',1,'p_start','plyYacc.py',26),
-  ('start -> fLoop stmt','start',2,'p_start','plyYacc.py',27),
-  ('start -> assign start','start',2,'p_start','plyYacc.py',28),
-  ('start -> fLoop start','start',2,'p_start','plyYacc.py',29),
-  ('start -> stmt start','start',2,'p_start','plyYacc.py',30),
-  ('start -> stmt','start',1,'p_start','plyYacc.py',31),
-  ('stmt -> PRINT VAR','stmt',2,'p_stmt','plyYacc.py',42),
-  ('assign -> factor EQUAL expr','assign',3,'p_assign','plyYacc.py',55),
-  ('expr -> expr PLUS term','expr',3,'p_expr','plyYacc.py',69),
-  ('expr -> expr MINUS term','expr',3,'p_expr','plyYacc.py',70),
-  ('expr -> term','expr',1,'p_expr','plyYacc.py',71),
-  ('term -> term MULTIPLY factor','term',3,'p_term','plyYacc.py',101),
-  ('term -> term DIVIDE factor','term',3,'p_term','plyYacc.py',102),
-  ('term -> factor','term',1,'p_term','plyYacc.py',103),
-  ('factor -> VAR','factor',1,'p_factor','plyYacc.py',132),
-  ('factor -> NUMBER','factor',1,'p_factor','plyYacc.py',133),
-  ('fLoop -> FOR inner','fLoop',2,'p_fLoop','plyYacc.py',141),
-  ('inner -> PARANOPEN VAR IN rangeSpec PARANCLOSE COLON','inner',6,'p_inner','plyYacc.py',146),
-  ('inner -> VAR IN rangeSpec COLON','inner',4,'p_inner','plyYacc.py',147),
-  ('rangeSpec -> RANGE PARANOPEN expr COMMA expr PARANCLOSE','rangeSpec',6,'p_rangeSpec','plyYacc.py',159),
+  ('start -> assign','start',1,'p_start','plyYacc.py',32),
+  ('start -> fLoop stmt','start',2,'p_start','plyYacc.py',33),
+  ('start -> fLoop stmt start','start',3,'p_start','plyYacc.py',34),
+  ('start -> assign start','start',2,'p_start','plyYacc.py',35),
+  ('start -> assign fLoop start','start',3,'p_start','plyYacc.py',36),
+  ('start -> stmt','start',1,'p_start','plyYacc.py',37),
+  ('stmt -> PRINT VAR','stmt',2,'p_stmt','plyYacc.py',48),
+  ('assign -> factor EQUAL expr','assign',3,'p_assign','plyYacc.py',61),
+  ('expr -> expr PLUS term','expr',3,'p_expr','plyYacc.py',75),
+  ('expr -> expr MINUS term','expr',3,'p_expr','plyYacc.py',76),
+  ('expr -> term','expr',1,'p_expr','plyYacc.py',77),
+  ('term -> term MULTIPLY factor','term',3,'p_term','plyYacc.py',111),
+  ('term -> term DIVIDE factor','term',3,'p_term','plyYacc.py',112),
+  ('term -> factor','term',1,'p_term','plyYacc.py',113),
+  ('factor -> VAR','factor',1,'p_factor','plyYacc.py',146),
+  ('factor -> NUMBER','factor',1,'p_factor','plyYacc.py',147),
+  ('fLoop -> FOR inner','fLoop',2,'p_fLoop','plyYacc.py',155),
+  ('inner -> PARANOPEN VAR IN rangeSpec PARANCLOSE COLON','inner',6,'p_inner','plyYacc.py',160),
+  ('inner -> VAR IN rangeSpec COLON','inner',4,'p_inner','plyYacc.py',161),
+  ('rangeSpec -> RANGE PARANOPEN expr COMMA expr PARANCLOSE','rangeSpec',6,'p_rangeSpec','plyYacc.py',173),
 ]

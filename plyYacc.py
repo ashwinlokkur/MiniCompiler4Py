@@ -31,16 +31,16 @@ def p_error(p):
 def p_start(p):
     '''start : assign 
              | fLoop stmt 
+             | fLoop stmt start
              | assign start
-             | fLoop start
-             | stmt start
+             | assign fLoop start
              | stmt'''
     if len(p)==2:
         p[0]=('START',p[1])
     elif len(p)==3:
         p[0]=('START',p[1],p[2])
     else:
-        p[0]=('START',p[1],p[2],strp[3])      
+        p[0]=('START',p[1],p[2],p[3])      
     global parseTree
     parseTree = p[0]
 
@@ -216,7 +216,7 @@ data = f.read()
 
 res = yacc.parse(data)
 print bcolors.GREEN+"PARSE TREE"+bcolors.WHITE
-print parseTree
+#print parseTree
 print "\n"
 print printParseTree(str(parseTree))
 

@@ -20,9 +20,9 @@ Grammar
 Rule 0     S' -> start
 Rule 1     start -> assign
 Rule 2     start -> fLoop stmt
-Rule 3     start -> assign start
-Rule 4     start -> fLoop start
-Rule 5     start -> stmt start
+Rule 3     start -> fLoop stmt start
+Rule 4     start -> assign start
+Rule 5     start -> assign fLoop start
 Rule 6     start -> stmt
 Rule 7     stmt -> PRINT VAR
 Rule 8     assign -> factor EQUAL expr
@@ -72,14 +72,14 @@ error                :
 
 Nonterminals, with rules where they appear
 
-assign               : 1 3
+assign               : 1 4 5
 expr                 : 8 9 10 20 20
-fLoop                : 2 4
+fLoop                : 2 3 5
 factor               : 8 12 13 14
 inner                : 17
 rangeSpec            : 18 19
 start                : 3 4 5 0
-stmt                 : 2 5 6
+stmt                 : 2 3 6
 term                 : 9 10 11 12 13
 
 Parsing method: LALR
@@ -89,9 +89,9 @@ state 0
     (0) S' -> . start
     (1) start -> . assign
     (2) start -> . fLoop stmt
-    (3) start -> . assign start
-    (4) start -> . fLoop start
-    (5) start -> . stmt start
+    (3) start -> . fLoop stmt start
+    (4) start -> . assign start
+    (5) start -> . assign fLoop start
     (6) start -> . stmt
     (8) assign -> . factor EQUAL expr
     (17) fLoop -> . FOR inner
@@ -113,29 +113,12 @@ state 0
 state 1
 
     (2) start -> fLoop . stmt
-    (4) start -> fLoop . start
+    (3) start -> fLoop . stmt start
     (7) stmt -> . PRINT VAR
-    (1) start -> . assign
-    (2) start -> . fLoop stmt
-    (3) start -> . assign start
-    (4) start -> . fLoop start
-    (5) start -> . stmt start
-    (6) start -> . stmt
-    (8) assign -> . factor EQUAL expr
-    (17) fLoop -> . FOR inner
-    (15) factor -> . VAR
-    (16) factor -> . NUMBER
 
     PRINT           shift and go to state 7
-    FOR             shift and go to state 2
-    VAR             shift and go to state 8
-    NUMBER          shift and go to state 4
 
-    fLoop                          shift and go to state 1
     stmt                           shift and go to state 10
-    start                          shift and go to state 11
-    factor                         shift and go to state 6
-    assign                         shift and go to state 9
 
 state 2
 
@@ -143,43 +126,23 @@ state 2
     (18) inner -> . PARANOPEN VAR IN rangeSpec PARANCLOSE COLON
     (19) inner -> . VAR IN rangeSpec COLON
 
-    PARANOPEN       shift and go to state 12
-    VAR             shift and go to state 14
+    PARANOPEN       shift and go to state 11
+    VAR             shift and go to state 13
 
-    inner                          shift and go to state 13
+    inner                          shift and go to state 12
 
 state 3
 
-    (5) start -> stmt . start
     (6) start -> stmt .
-    (1) start -> . assign
-    (2) start -> . fLoop stmt
-    (3) start -> . assign start
-    (4) start -> . fLoop start
-    (5) start -> . stmt start
-    (6) start -> . stmt
-    (8) assign -> . factor EQUAL expr
-    (17) fLoop -> . FOR inner
-    (7) stmt -> . PRINT VAR
-    (15) factor -> . VAR
-    (16) factor -> . NUMBER
 
     $end            reduce using rule 6 (start -> stmt .)
-    FOR             shift and go to state 2
-    PRINT           shift and go to state 7
-    VAR             shift and go to state 8
-    NUMBER          shift and go to state 4
 
-    fLoop                          shift and go to state 1
-    stmt                           shift and go to state 3
-    start                          shift and go to state 15
-    factor                         shift and go to state 6
-    assign                         shift and go to state 9
 
 state 4
 
     (16) factor -> NUMBER .
 
+    EQUAL           reduce using rule 16 (factor -> NUMBER .)
     MULTIPLY        reduce using rule 16 (factor -> NUMBER .)
     DIVIDE          reduce using rule 16 (factor -> NUMBER .)
     PLUS            reduce using rule 16 (factor -> NUMBER .)
@@ -191,7 +154,6 @@ state 4
     $end            reduce using rule 16 (factor -> NUMBER .)
     COMMA           reduce using rule 16 (factor -> NUMBER .)
     PARANCLOSE      reduce using rule 16 (factor -> NUMBER .)
-    EQUAL           reduce using rule 16 (factor -> NUMBER .)
 
 
 state 5
@@ -204,20 +166,21 @@ state 6
 
     (8) assign -> factor . EQUAL expr
 
-    EQUAL           shift and go to state 16
+    EQUAL           shift and go to state 14
 
 
 state 7
 
     (7) stmt -> PRINT . VAR
 
-    VAR             shift and go to state 17
+    VAR             shift and go to state 15
 
 
 state 8
 
     (15) factor -> VAR .
 
+    EQUAL           reduce using rule 15 (factor -> VAR .)
     MULTIPLY        reduce using rule 15 (factor -> VAR .)
     DIVIDE          reduce using rule 15 (factor -> VAR .)
     PLUS            reduce using rule 15 (factor -> VAR .)
@@ -229,18 +192,46 @@ state 8
     $end            reduce using rule 15 (factor -> VAR .)
     COMMA           reduce using rule 15 (factor -> VAR .)
     PARANCLOSE      reduce using rule 15 (factor -> VAR .)
-    EQUAL           reduce using rule 15 (factor -> VAR .)
 
 
 state 9
 
     (1) start -> assign .
-    (3) start -> assign . start
+    (4) start -> assign . start
+    (5) start -> assign . fLoop start
     (1) start -> . assign
     (2) start -> . fLoop stmt
-    (3) start -> . assign start
-    (4) start -> . fLoop start
-    (5) start -> . stmt start
+    (3) start -> . fLoop stmt start
+    (4) start -> . assign start
+    (5) start -> . assign fLoop start
+    (6) start -> . stmt
+    (17) fLoop -> . FOR inner
+    (8) assign -> . factor EQUAL expr
+    (7) stmt -> . PRINT VAR
+    (15) factor -> . VAR
+    (16) factor -> . NUMBER
+
+    $end            reduce using rule 1 (start -> assign .)
+    FOR             shift and go to state 2
+    PRINT           shift and go to state 7
+    VAR             shift and go to state 8
+    NUMBER          shift and go to state 4
+
+    fLoop                          shift and go to state 16
+    stmt                           shift and go to state 3
+    start                          shift and go to state 17
+    factor                         shift and go to state 6
+    assign                         shift and go to state 9
+
+state 10
+
+    (2) start -> fLoop stmt .
+    (3) start -> fLoop stmt . start
+    (1) start -> . assign
+    (2) start -> . fLoop stmt
+    (3) start -> . fLoop stmt start
+    (4) start -> . assign start
+    (5) start -> . assign fLoop start
     (6) start -> . stmt
     (8) assign -> . factor EQUAL expr
     (17) fLoop -> . FOR inner
@@ -248,7 +239,7 @@ state 9
     (15) factor -> . VAR
     (16) factor -> . NUMBER
 
-    $end            reduce using rule 1 (start -> assign .)
+    $end            reduce using rule 2 (start -> fLoop stmt .)
     FOR             shift and go to state 2
     PRINT           shift and go to state 7
     VAR             shift and go to state 8
@@ -260,53 +251,14 @@ state 9
     factor                         shift and go to state 6
     assign                         shift and go to state 9
 
-state 10
-
-    (2) start -> fLoop stmt .
-    (5) start -> stmt . start
-    (6) start -> stmt .
-    (1) start -> . assign
-    (2) start -> . fLoop stmt
-    (3) start -> . assign start
-    (4) start -> . fLoop start
-    (5) start -> . stmt start
-    (6) start -> . stmt
-    (8) assign -> . factor EQUAL expr
-    (17) fLoop -> . FOR inner
-    (7) stmt -> . PRINT VAR
-    (15) factor -> . VAR
-    (16) factor -> . NUMBER
-
-  ! reduce/reduce conflict for $end resolved using rule 2 (start -> fLoop stmt .)
-    $end            reduce using rule 2 (start -> fLoop stmt .)
-    FOR             shift and go to state 2
-    PRINT           shift and go to state 7
-    VAR             shift and go to state 8
-    NUMBER          shift and go to state 4
-
-  ! $end            [ reduce using rule 6 (start -> stmt .) ]
-
-    fLoop                          shift and go to state 1
-    stmt                           shift and go to state 3
-    start                          shift and go to state 15
-    factor                         shift and go to state 6
-    assign                         shift and go to state 9
-
 state 11
-
-    (4) start -> fLoop start .
-
-    $end            reduce using rule 4 (start -> fLoop start .)
-
-
-state 12
 
     (18) inner -> PARANOPEN . VAR IN rangeSpec PARANCLOSE COLON
 
     VAR             shift and go to state 19
 
 
-state 13
+state 12
 
     (17) fLoop -> FOR inner .
 
@@ -316,21 +268,14 @@ state 13
     NUMBER          reduce using rule 17 (fLoop -> FOR inner .)
 
 
-state 14
+state 13
 
     (19) inner -> VAR . IN rangeSpec COLON
 
     IN              shift and go to state 20
 
 
-state 15
-
-    (5) start -> stmt start .
-
-    $end            reduce using rule 5 (start -> stmt start .)
-
-
-state 16
+state 14
 
     (8) assign -> factor EQUAL . expr
     (9) expr -> . expr PLUS term
@@ -349,29 +294,64 @@ state 16
     term                           shift and go to state 21
     factor                         shift and go to state 23
 
-state 17
+state 15
 
     (7) stmt -> PRINT VAR .
 
+    $end            reduce using rule 7 (stmt -> PRINT VAR .)
     FOR             reduce using rule 7 (stmt -> PRINT VAR .)
     PRINT           reduce using rule 7 (stmt -> PRINT VAR .)
     VAR             reduce using rule 7 (stmt -> PRINT VAR .)
     NUMBER          reduce using rule 7 (stmt -> PRINT VAR .)
-    $end            reduce using rule 7 (stmt -> PRINT VAR .)
+
+
+state 16
+
+    (5) start -> assign fLoop . start
+    (2) start -> fLoop . stmt
+    (3) start -> fLoop . stmt start
+    (1) start -> . assign
+    (2) start -> . fLoop stmt
+    (3) start -> . fLoop stmt start
+    (4) start -> . assign start
+    (5) start -> . assign fLoop start
+    (6) start -> . stmt
+    (7) stmt -> . PRINT VAR
+    (8) assign -> . factor EQUAL expr
+    (17) fLoop -> . FOR inner
+    (15) factor -> . VAR
+    (16) factor -> . NUMBER
+
+    PRINT           shift and go to state 7
+    FOR             shift and go to state 2
+    VAR             shift and go to state 8
+    NUMBER          shift and go to state 4
+
+    fLoop                          shift and go to state 1
+    stmt                           shift and go to state 24
+    start                          shift and go to state 25
+    factor                         shift and go to state 6
+    assign                         shift and go to state 9
+
+state 17
+
+    (4) start -> assign start .
+
+    $end            reduce using rule 4 (start -> assign start .)
 
 
 state 18
 
-    (3) start -> assign start .
+    (3) start -> fLoop stmt start .
 
-    $end            reduce using rule 3 (start -> assign start .)
+    $end            reduce using rule 3 (start -> fLoop stmt start .)
 
 
 state 19
 
     (18) inner -> PARANOPEN VAR . IN rangeSpec PARANCLOSE COLON
 
-    IN              shift and go to state 24
+    IN              shift and go to state 26
 
 
 state 20
@@ -379,9 +359,9 @@ state 20
     (19) inner -> VAR IN . rangeSpec COLON
     (20) rangeSpec -> . RANGE PARANOPEN expr COMMA expr PARANCLOSE
 
-    RANGE           shift and go to state 25
+    RANGE           shift and go to state 27
 
-    rangeSpec                      shift and go to state 26
+    rangeSpec                      shift and go to state 28
 
 state 21
 
@@ -389,6 +369,7 @@ state 21
     (12) term -> term . MULTIPLY factor
     (13) term -> term . DIVIDE factor
 
+    PARANCLOSE      reduce using rule 11 (expr -> term .)
     PLUS            reduce using rule 11 (expr -> term .)
     MINUS           reduce using rule 11 (expr -> term .)
     FOR             reduce using rule 11 (expr -> term .)
@@ -396,10 +377,9 @@ state 21
     VAR             reduce using rule 11 (expr -> term .)
     NUMBER          reduce using rule 11 (expr -> term .)
     $end            reduce using rule 11 (expr -> term .)
-    PARANCLOSE      reduce using rule 11 (expr -> term .)
     COMMA           reduce using rule 11 (expr -> term .)
-    MULTIPLY        shift and go to state 27
-    DIVIDE          shift and go to state 28
+    MULTIPLY        shift and go to state 29
+    DIVIDE          shift and go to state 30
 
 
 state 22
@@ -413,8 +393,8 @@ state 22
     VAR             reduce using rule 8 (assign -> factor EQUAL expr .)
     NUMBER          reduce using rule 8 (assign -> factor EQUAL expr .)
     $end            reduce using rule 8 (assign -> factor EQUAL expr .)
-    PLUS            shift and go to state 29
-    MINUS           shift and go to state 30
+    PLUS            shift and go to state 31
+    MINUS           shift and go to state 32
 
 
 state 23
@@ -423,41 +403,80 @@ state 23
 
     MULTIPLY        reduce using rule 14 (term -> factor .)
     DIVIDE          reduce using rule 14 (term -> factor .)
-    PARANCLOSE      reduce using rule 14 (term -> factor .)
+    COMMA           reduce using rule 14 (term -> factor .)
     PLUS            reduce using rule 14 (term -> factor .)
     MINUS           reduce using rule 14 (term -> factor .)
+    PARANCLOSE      reduce using rule 14 (term -> factor .)
     FOR             reduce using rule 14 (term -> factor .)
     PRINT           reduce using rule 14 (term -> factor .)
     VAR             reduce using rule 14 (term -> factor .)
     NUMBER          reduce using rule 14 (term -> factor .)
     $end            reduce using rule 14 (term -> factor .)
-    COMMA           reduce using rule 14 (term -> factor .)
 
 
 state 24
 
-    (18) inner -> PARANOPEN VAR IN . rangeSpec PARANCLOSE COLON
-    (20) rangeSpec -> . RANGE PARANOPEN expr COMMA expr PARANCLOSE
+    (2) start -> fLoop stmt .
+    (3) start -> fLoop stmt . start
+    (6) start -> stmt .
+    (1) start -> . assign
+    (2) start -> . fLoop stmt
+    (3) start -> . fLoop stmt start
+    (4) start -> . assign start
+    (5) start -> . assign fLoop start
+    (6) start -> . stmt
+    (8) assign -> . factor EQUAL expr
+    (17) fLoop -> . FOR inner
+    (7) stmt -> . PRINT VAR
+    (15) factor -> . VAR
+    (16) factor -> . NUMBER
 
-    RANGE           shift and go to state 25
+  ! reduce/reduce conflict for $end resolved using rule 2 (start -> fLoop stmt .)
+    $end            reduce using rule 2 (start -> fLoop stmt .)
+    FOR             shift and go to state 2
+    PRINT           shift and go to state 7
+    VAR             shift and go to state 8
+    NUMBER          shift and go to state 4
 
-    rangeSpec                      shift and go to state 31
+  ! $end            [ reduce using rule 6 (start -> stmt .) ]
+
+    fLoop                          shift and go to state 1
+    stmt                           shift and go to state 3
+    start                          shift and go to state 18
+    factor                         shift and go to state 6
+    assign                         shift and go to state 9
 
 state 25
 
-    (20) rangeSpec -> RANGE . PARANOPEN expr COMMA expr PARANCLOSE
+    (5) start -> assign fLoop start .
 
-    PARANOPEN       shift and go to state 32
+    $end            reduce using rule 5 (start -> assign fLoop start .)
 
 
 state 26
 
-    (19) inner -> VAR IN rangeSpec . COLON
+    (18) inner -> PARANOPEN VAR IN . rangeSpec PARANCLOSE COLON
+    (20) rangeSpec -> . RANGE PARANOPEN expr COMMA expr PARANCLOSE
 
-    COLON           shift and go to state 33
+    RANGE           shift and go to state 27
 
+    rangeSpec                      shift and go to state 33
 
 state 27
+
+    (20) rangeSpec -> RANGE . PARANOPEN expr COMMA expr PARANCLOSE
+
+    PARANOPEN       shift and go to state 34
+
+
+state 28
+
+    (19) inner -> VAR IN rangeSpec . COLON
+
+    COLON           shift and go to state 35
+
+
+state 29
 
     (12) term -> term MULTIPLY . factor
     (15) factor -> . VAR
@@ -466,9 +485,9 @@ state 27
     VAR             shift and go to state 8
     NUMBER          shift and go to state 4
 
-    factor                         shift and go to state 34
+    factor                         shift and go to state 36
 
-state 28
+state 30
 
     (13) term -> term DIVIDE . factor
     (15) factor -> . VAR
@@ -477,9 +496,9 @@ state 28
     VAR             shift and go to state 8
     NUMBER          shift and go to state 4
 
-    factor                         shift and go to state 35
+    factor                         shift and go to state 37
 
-state 29
+state 31
 
     (9) expr -> expr PLUS . term
     (12) term -> . term MULTIPLY factor
@@ -491,10 +510,10 @@ state 29
     VAR             shift and go to state 8
     NUMBER          shift and go to state 4
 
-    term                           shift and go to state 36
+    term                           shift and go to state 38
     factor                         shift and go to state 23
 
-state 30
+state 32
 
     (10) expr -> expr MINUS . term
     (12) term -> . term MULTIPLY factor
@@ -506,17 +525,17 @@ state 30
     VAR             shift and go to state 8
     NUMBER          shift and go to state 4
 
-    term                           shift and go to state 37
+    term                           shift and go to state 39
     factor                         shift and go to state 23
 
-state 31
+state 33
 
     (18) inner -> PARANOPEN VAR IN rangeSpec . PARANCLOSE COLON
 
-    PARANCLOSE      shift and go to state 38
+    PARANCLOSE      shift and go to state 40
 
 
-state 32
+state 34
 
     (20) rangeSpec -> RANGE PARANOPEN . expr COMMA expr PARANCLOSE
     (9) expr -> . expr PLUS term
@@ -531,11 +550,11 @@ state 32
     VAR             shift and go to state 8
     NUMBER          shift and go to state 4
 
-    expr                           shift and go to state 39
+    expr                           shift and go to state 41
     term                           shift and go to state 21
     factor                         shift and go to state 23
 
-state 33
+state 35
 
     (19) inner -> VAR IN rangeSpec COLON .
 
@@ -545,46 +564,47 @@ state 33
     NUMBER          reduce using rule 19 (inner -> VAR IN rangeSpec COLON .)
 
 
-state 34
+state 36
 
     (12) term -> term MULTIPLY factor .
 
     MULTIPLY        reduce using rule 12 (term -> term MULTIPLY factor .)
     DIVIDE          reduce using rule 12 (term -> term MULTIPLY factor .)
-    PARANCLOSE      reduce using rule 12 (term -> term MULTIPLY factor .)
+    COMMA           reduce using rule 12 (term -> term MULTIPLY factor .)
     PLUS            reduce using rule 12 (term -> term MULTIPLY factor .)
     MINUS           reduce using rule 12 (term -> term MULTIPLY factor .)
+    PARANCLOSE      reduce using rule 12 (term -> term MULTIPLY factor .)
     FOR             reduce using rule 12 (term -> term MULTIPLY factor .)
     PRINT           reduce using rule 12 (term -> term MULTIPLY factor .)
     VAR             reduce using rule 12 (term -> term MULTIPLY factor .)
     NUMBER          reduce using rule 12 (term -> term MULTIPLY factor .)
     $end            reduce using rule 12 (term -> term MULTIPLY factor .)
-    COMMA           reduce using rule 12 (term -> term MULTIPLY factor .)
 
 
-state 35
+state 37
 
     (13) term -> term DIVIDE factor .
 
     MULTIPLY        reduce using rule 13 (term -> term DIVIDE factor .)
     DIVIDE          reduce using rule 13 (term -> term DIVIDE factor .)
-    PARANCLOSE      reduce using rule 13 (term -> term DIVIDE factor .)
+    COMMA           reduce using rule 13 (term -> term DIVIDE factor .)
     PLUS            reduce using rule 13 (term -> term DIVIDE factor .)
     MINUS           reduce using rule 13 (term -> term DIVIDE factor .)
+    PARANCLOSE      reduce using rule 13 (term -> term DIVIDE factor .)
     FOR             reduce using rule 13 (term -> term DIVIDE factor .)
     PRINT           reduce using rule 13 (term -> term DIVIDE factor .)
     VAR             reduce using rule 13 (term -> term DIVIDE factor .)
     NUMBER          reduce using rule 13 (term -> term DIVIDE factor .)
     $end            reduce using rule 13 (term -> term DIVIDE factor .)
-    COMMA           reduce using rule 13 (term -> term DIVIDE factor .)
 
 
-state 36
+state 38
 
     (9) expr -> expr PLUS term .
     (12) term -> term . MULTIPLY factor
     (13) term -> term . DIVIDE factor
 
+    PARANCLOSE      reduce using rule 9 (expr -> expr PLUS term .)
     PLUS            reduce using rule 9 (expr -> expr PLUS term .)
     MINUS           reduce using rule 9 (expr -> expr PLUS term .)
     FOR             reduce using rule 9 (expr -> expr PLUS term .)
@@ -592,18 +612,18 @@ state 36
     VAR             reduce using rule 9 (expr -> expr PLUS term .)
     NUMBER          reduce using rule 9 (expr -> expr PLUS term .)
     $end            reduce using rule 9 (expr -> expr PLUS term .)
-    PARANCLOSE      reduce using rule 9 (expr -> expr PLUS term .)
     COMMA           reduce using rule 9 (expr -> expr PLUS term .)
-    MULTIPLY        shift and go to state 27
-    DIVIDE          shift and go to state 28
+    MULTIPLY        shift and go to state 29
+    DIVIDE          shift and go to state 30
 
 
-state 37
+state 39
 
     (10) expr -> expr MINUS term .
     (12) term -> term . MULTIPLY factor
     (13) term -> term . DIVIDE factor
 
+    PARANCLOSE      reduce using rule 10 (expr -> expr MINUS term .)
     PLUS            reduce using rule 10 (expr -> expr MINUS term .)
     MINUS           reduce using rule 10 (expr -> expr MINUS term .)
     FOR             reduce using rule 10 (expr -> expr MINUS term .)
@@ -611,31 +631,30 @@ state 37
     VAR             reduce using rule 10 (expr -> expr MINUS term .)
     NUMBER          reduce using rule 10 (expr -> expr MINUS term .)
     $end            reduce using rule 10 (expr -> expr MINUS term .)
-    PARANCLOSE      reduce using rule 10 (expr -> expr MINUS term .)
     COMMA           reduce using rule 10 (expr -> expr MINUS term .)
-    MULTIPLY        shift and go to state 27
-    DIVIDE          shift and go to state 28
+    MULTIPLY        shift and go to state 29
+    DIVIDE          shift and go to state 30
 
 
-state 38
+state 40
 
     (18) inner -> PARANOPEN VAR IN rangeSpec PARANCLOSE . COLON
 
-    COLON           shift and go to state 40
+    COLON           shift and go to state 42
 
 
-state 39
+state 41
 
     (20) rangeSpec -> RANGE PARANOPEN expr . COMMA expr PARANCLOSE
     (9) expr -> expr . PLUS term
     (10) expr -> expr . MINUS term
 
-    COMMA           shift and go to state 41
-    PLUS            shift and go to state 29
-    MINUS           shift and go to state 30
+    COMMA           shift and go to state 43
+    PLUS            shift and go to state 31
+    MINUS           shift and go to state 32
 
 
-state 40
+state 42
 
     (18) inner -> PARANOPEN VAR IN rangeSpec PARANCLOSE COLON .
 
@@ -645,7 +664,7 @@ state 40
     NUMBER          reduce using rule 18 (inner -> PARANOPEN VAR IN rangeSpec PARANCLOSE COLON .)
 
 
-state 41
+state 43
 
     (20) rangeSpec -> RANGE PARANOPEN expr COMMA . expr PARANCLOSE
     (9) expr -> . expr PLUS term
@@ -660,30 +679,30 @@ state 41
     VAR             shift and go to state 8
     NUMBER          shift and go to state 4
 
-    expr                           shift and go to state 42
+    expr                           shift and go to state 44
     term                           shift and go to state 21
     factor                         shift and go to state 23
 
-state 42
+state 44
 
     (20) rangeSpec -> RANGE PARANOPEN expr COMMA expr . PARANCLOSE
     (9) expr -> expr . PLUS term
     (10) expr -> expr . MINUS term
 
-    PARANCLOSE      shift and go to state 43
-    PLUS            shift and go to state 29
-    MINUS           shift and go to state 30
+    PARANCLOSE      shift and go to state 45
+    PLUS            shift and go to state 31
+    MINUS           shift and go to state 32
 
 
-state 43
+state 45
 
     (20) rangeSpec -> RANGE PARANOPEN expr COMMA expr PARANCLOSE .
 
-    PARANCLOSE      reduce using rule 20 (rangeSpec -> RANGE PARANOPEN expr COMMA expr PARANCLOSE .)
     COLON           reduce using rule 20 (rangeSpec -> RANGE PARANOPEN expr COMMA expr PARANCLOSE .)
+    PARANCLOSE      reduce using rule 20 (rangeSpec -> RANGE PARANOPEN expr COMMA expr PARANCLOSE .)
 
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
-WARNING: reduce/reduce conflict in state 10 resolved using rule (start -> fLoop stmt)
-WARNING: rejected rule (start -> stmt) in state 10
+WARNING: reduce/reduce conflict in state 24 resolved using rule (start -> fLoop stmt)
+WARNING: rejected rule (start -> stmt) in state 24
