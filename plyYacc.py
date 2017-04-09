@@ -1,6 +1,11 @@
 import ply.yacc as yacc
 import plyLex
 
+class bcolors:
+    GREEN = '\033[92m'
+    RED = '\033[91m'
+    WHITE = '\033[0m'
+
 tokens=plyLex.tokens
 parseTree=()
 icg=[]
@@ -19,9 +24,10 @@ def innerMost(x):
     return x
 
 def p_error(p):
-    print "Something went wrong"
-    print "Error at "+str(p.lineno)
+    print bcolors.RED+"Something went wrong"+bcolors.WHITE
+    print bcolors.RED+"Error at "+str(p.lineno)+bcolors.WHITE
     exit()
+
 def p_start(p):
     '''start : assign 
              | fLoop stmt 
@@ -34,13 +40,13 @@ def p_start(p):
     elif len(p)==3:
         p[0]=('START',p[1],p[2])
     else:
-        p[0]=('START',p[1],p[2],p[3])      
+        p[0]=('START',p[1],p[2],strp[3])      
     global parseTree
     parseTree = p[0]
 
 def p_stmt(p):  #RE-THINK
     '''stmt : PRINT VAR'''
-    p[0]="STATEMENT"
+    p[0]="STATEMENT "
     global icg
     global labels
     if len(labels)>1:
@@ -48,7 +54,7 @@ def p_stmt(p):  #RE-THINK
         labels=labels[0:-1]
         icg.append(labels[-1]+":")
         labels=labels[0:-1]
-    icg.append("STMT")
+    icg.append(" STMT ")
 
 
 def p_assign(p):
@@ -177,6 +183,31 @@ def p_rangeSpec(p):
     labels.append("L"+str(labelCount-1))
     labelCount = labelCount + 1
 
+def printParseTree(s):
+    tabs=-1
+    finalStr=""
+    toBeIgnore=[',','\'']
+    symbols=['=','+','-','*','/',':']
+    for i in range(0,len(s)):
+        if s[i]=="(":
+            finalStr=finalStr+"\n"
+            tabs=tabs+1
+            for j in range(0, tabs):
+                finalStr=finalStr+"    "
+        elif s[i]==")":
+            tabs=tabs-1
+            finalStr=finalStr+"\n"
+        else:
+            if s[i] not in toBeIgnore:
+                if s[i] in symbols:
+                    finalStr=finalStr+"  "+s[i]
+                else:
+                    finalStr=finalStr+s[i]
+                if s[i]=="T" and s[i-1]=="N":
+                    finalStr=finalStr+"\n"
+
+    return finalStr
+
 
 parser = yacc.yacc()
 
@@ -184,11 +215,14 @@ f = open('inputFile.py')
 data = f.read()
 
 res = yacc.parse(data)
-print "PARSE TREE"
+print bcolors.GREEN+"PARSE TREE"+bcolors.WHITE
 print parseTree
+print "\n"
+print printParseTree(str(parseTree))
+
 
 print "\n\n\n\n"
-print "ICG "
+print bcolors.GREEN+"ICG "+bcolors.WHITE
 #print icg
 
 for i in icg:
