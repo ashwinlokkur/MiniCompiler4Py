@@ -1,10 +1,12 @@
 import ply.yacc as yacc
 import plyLex
+import sys
 
 class bcolors:
     GREEN = '\033[92m'
     RED = '\033[91m'
     WHITE = '\033[0m'
+    PURPLE = '\033[35m'
 
 tokens=plyLex.tokens
 parseTree=()
@@ -44,7 +46,7 @@ def p_start(p):
     global parseTree
     parseTree = p[0]
 
-def p_stmt(p):  #RE-THINK
+def p_stmt(p): 
     '''stmt : PRINT VAR'''
     p[0]="STATEMENT "
     global icg
@@ -193,41 +195,42 @@ def printParseTree(s):
             finalStr=finalStr+"\n"
             tabs=tabs+1
             for j in range(0, tabs):
-                finalStr=finalStr+"    "
+                finalStr=finalStr+bcolors.WHITE+"---"
         elif s[i]==")":
             tabs=tabs-1
             finalStr=finalStr+"\n"
         else:
             if s[i] not in toBeIgnore:
                 if s[i] in symbols:
-                    finalStr=finalStr+"  "+s[i]
+                    for j in range(0, tabs):
+                        finalStr=finalStr+bcolors.WHITE+"---"
+                    finalStr=finalStr+"  "+bcolors.PURPLE+s[i]+bcolors.WHITE
                 else:
-                    finalStr=finalStr+s[i]
+                    finalStr=finalStr+bcolors.PURPLE+s[i]+bcolors.WHITE
                 if s[i]=="T" and s[i-1]=="N":
                     finalStr=finalStr+"\n"
-
     return finalStr
 
 
 parser = yacc.yacc()
 
-f = open('inputFile.py')
+f = open(sys.argv[1])
 data = f.read()
 
 res = yacc.parse(data)
 print bcolors.GREEN+"PARSE TREE"+bcolors.WHITE
-#print parseTree
+print parseTree
 print "\n"
 print printParseTree(str(parseTree))
 
 
-print "\n\n\n\n"
+print "\n\n"
 print bcolors.GREEN+"ICG "+bcolors.WHITE
 #print icg
 
 for i in icg:
     print i
-
+print "\n"
 #parseTreeData =  str(compiler.parse(data))
 #print parseTreeData 
 #genParseTree.disp(parseTreeData)

@@ -1,4 +1,4 @@
-n = 5-2/2
+n = 5-2/1
 '''asdasdasd'''
 #comm     qsdasd
   #co mm 2
